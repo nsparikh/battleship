@@ -1,10 +1,13 @@
 class Ship:
-	def __init__(self, x, y, isHorizontal):
-		self.x = x # Leftmost x-coordinate
-		self.y = y # Topmost y-coordinate
+	def __init__(self, length, isHorizontal):
+		self.length = length
 
 		# True if the ship is horizontally oriented
 		self.isHorizontal = isHorizontal 
+
+		# Coordinates are only set when the ship is placed successfully
+		self.x = x # Leftmost x-coordinate
+		self.y = y # Topmost y-coordinate
 
 		# True if the ship has been sunk
 		self.isSunk = False 
@@ -32,7 +35,31 @@ class Grid:
 	# Adds the given ship to the grid at the given coordinates
 	# Returns True if successful, False if invalid placement
 	def add_ship(self, ship, x, y):
-		pass
+		# First check to see if this is in bounds of the grid
+		if (x < 0 or (ship.isHorizontal and (x + ship.length) >= self.w)
+			or y < 0 or (!ship.isHorizontal and (y + ship.length) >= self.h):
+			return False
+
+		# Next check to see if this will overlap with any other ships
+		curX = x
+		curY = y
+		for i in range(ship.length):
+			if self.grid_array[curX][curY].ship is not None: 
+				return False
+			if ship.isHorizontal: 
+				curX += 1
+			else: 
+				curY += 1
+
+		# Add the ship to the grid
+		ship.x = x
+		ship.y = y
+		for i in range(ship.length):
+			self.grid_array[x][y].ship = ship
+			if ship.isHorizontal:
+				x += 1
+			else:
+				y += 1
 
 	# Makes a guess at the given coordinates
 	# Returns True if it hits a ship, False if the guess is a miss
@@ -52,11 +79,12 @@ class Grid:
 			row = ''
 			for x in range(self.w):
 				gs = self.grid_array[x][y]
+				gs_string = ''
 				if gs.ship != None and canSeeShips: 
-					row += 's'
+					gs_string += 's'
 				if gs.isGuessed: 
-					row += 'X'
-				if gs.ship == None and not gs.isGuessed:
-					row += '_'
-				row += ' '
+					gs_string += 'X'
+				if len(gs_string) == 0:
+					gs_string += '_'
+				row += gs_string + ' '
 			print row
