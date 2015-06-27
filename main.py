@@ -9,6 +9,7 @@ from battleship import *
 def run():
 	player_grid = Grid()
 	opponent_grid = Grid(True)
+	opponent_grid.print_grid(True)
 	
 	# Listen for user input
 	# Parse command and execute the appropriate actions if valid
@@ -22,6 +23,9 @@ def run():
 
 		# User enters an 'add ship' command
 		elif user_input[0] == 's':
+			if player_grid.check_if_ready():
+				print 'Already added all 5 ships. Make a guess against your opponent!'
+				continue
 			try:
 				name = user_input[1]
 				length = int(user_input[2])
@@ -52,7 +56,22 @@ def run():
 					else:
 						print 'Goodbye!'
 						break
-				# TODO: handle WIN case here
+
+				# If the user's board is ready, have the computer make a random guess
+				if player_grid.check_if_ready():
+					rand_x = random.randint(0, 9)
+					rand_y = random.randint(0, 9)
+					opponent_response = player_grid.make_guess(rand_x, rand_y)
+
+					# TODO: find a cleaner way of doing this without the response string...
+					while 'Already' in opponent_response:
+						rand_x = random.randint(0, 9)
+						rand_y = random.randint(0, 9)
+						opponent_response = player_grid.make_guess(rand_x, rand_y)
+					print 'OPPONENT GUESS: '
+					player_grid.print_grid(True)
+					print '\n'
+
 			except:
 				print 'Invalid input. Please try again.'
 

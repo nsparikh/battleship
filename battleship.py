@@ -26,12 +26,29 @@ class GridSquare:
 		self.ship = None 
 
 		# True if the opponent has guessed this square
-		self.isGuessed = False 
+		self.isGuessed = False
+		# TODO: change this to use a better state representation
+
+	# Returns a single-character representation of the square
+	# Key:
+	# 	O = missed
+	# 	X = hit
+	# 	_ = not guessed
+	# 	* = contains ship (only visible if can_see_ships is True)
+	def gs_string(self, can_see_ships):
+		if self.isGuessed and self.ship is not None:
+			return 'X'
+		elif self.ship is not None and can_see_ships:
+			return '*'
+		elif self.isGuessed:
+			return 'O'
+		else:
+			return '_'
 
 # Represents the board
 class Grid:
 	# If addRandomShips is True, randomly places 5 ships on the board
-	def __init__(self, addRandomShips = False):
+	def __init__(self, add_random_ships = False):
 		self.w = 10 # Default width of 10
 		self.h = 10 # Default height of 10
 
@@ -40,23 +57,35 @@ class Grid:
 		self.ships = []
 
 		# Randomly place the ships
-		if addRandomShips:
-			self.add_ship(Ship('Aircraft Carrier', 5, False), 0, 0)
-			self.add_ship(Ship('Battleship', 4, False), 1, 0)
-			self.add_ship(Ship('Submarine', 3, False), 2, 0)
-			self.add_ship(Ship('Cruiser', 3, False), 3, 0)
-			self.add_ship(Ship('Destroyer', 2, False), 4, 0)
-			# TODO: actually make this random
+		if add_random_ships:
+			ships_to_add = [
+				Ship('Aircraft Carrier', 5, False),
+				Ship('Battleship', 4, True),
+				Ship('Submarine', 3, False),
+				Ship('Cruiser', 3, True),
+				Ship('Destroyer', 2, False)
+			]
+			while len(ships_to_add) > 0:
+				rand_x = random.randint(0, 9)
+				rand_y = random.randint(0, 9)
+				s = ships_to_add[0]
+				if self.add_ship(s, rand_x, rand_y):
+					ships_to_add.remove(s)
+
+	# Checks if the board is 'ready', e.g. all 5 ships have been added
+	def check_if_ready(self):
+		return len(self.ships) == 5
 
 	# Adds the given ship to the grid at the given coordinates
 	# Returns True if successful, False if invalid placement
 	def add_ship(self, ship, x, y):
-		# TODO: add restrictions on how many ships of each size can be placed
-
 		# First check to see if this is in bounds of the grid
 		if (x < 0 or (ship.isHorizontal and (x + ship.length) >= self.w)
 			or y < 0 or (not ship.isHorizontal and (y + ship.length) >= self.h)):
 			return False
+
+		# TODO: add a check here to make sure we can add a ship
+		# of this length (i.e. can't have more than 2 length-3 ships)
 
 		# Next check to see if this will overlap with any other ships
 		curX = x
@@ -74,11 +103,11 @@ class Grid:
 		ship.y = y
 		for i in range(ship.length):
 			self.grid_array[x][y].ship = ship
-			self.ships.append(ship)
 			if ship.isHorizontal:
 				x += 1
 			else:
 				y += 1
+		self.ships.append(ship)
 		return True
 
 	# Makes a guess at the given coordinates and updates the board
@@ -128,22 +157,10 @@ class Grid:
 		return True
 
 	# Prints out the grid in a human readable format
-	# Represents empty squares with '_', hit squares with 'X', 
-	# missed squares with 'O', and ships with 's' if they can be seen
-	def print_grid(self, canSeeShips):
+	def print_grid(self, can_see_ships):
 		for y in range(self.h):
 			row = ''
 			for x in range(self.w):
-				gs = self.grid_array[x][y]
-				gs_string = ''
-				if gs.ship != None and canSeeShips: 
-					gs_string += 's'
-				if gs.ship != None and gs.isGuessed:
-					gs_string += 'X'
-				elif gs.isGuessed: 
-					gs_string += 'O'
-				if len(gs_string) == 0:
-					gs_string += '_'
-				row += gs_string + ' '
+				row += self.grid_array[x][y].gs_string(can_see_ships) + ' '
 			print row
 
