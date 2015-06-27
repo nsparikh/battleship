@@ -1,4 +1,5 @@
 from battleship import *
+from battleship_ai import *
 
 # Runs the game play
 # User can input the following commands:
@@ -9,6 +10,7 @@ from battleship import *
 def run():
 	player_grid = Grid()
 	opponent_grid = Grid(True)
+	opponent = RandomGuesser()
 	
 	# Listen for user input
 	# Parse command and execute the appropriate actions if valid
@@ -41,12 +43,17 @@ def run():
 
 		# User enters a 'make guess' command
 		elif user_input[0] == 'g':
+			if not player_grid.check_if_ready():
+				print 'You must finish placing 5 ships on your board before making a guess.'
+				continue
 			try:
 				x = int(user_input[1])
 				y = int(user_input[2])
 				response_string = opponent_grid.make_guess(x, y)
 				opponent_grid.print_grid(False)
 				print response_string + '\n'
+
+				# If player has won, reset the game grids
 				if 'win' in response_string:
 					restart_input = raw_input('Play again? (y / n): ')
 					if restart_input == 'y':
@@ -56,20 +63,17 @@ def run():
 						print 'Goodbye!'
 						break
 
-				# If the user's board is ready, have the computer make a random guess
-				if player_grid.check_if_ready():
-					rand_x = random.randint(0, 9)
-					rand_y = random.randint(0, 9)
-					opponent_response = player_grid.make_guess(rand_x, rand_y)
+				# Have the computer make a random guess
+				(opp_x, opp_y) = opponent.next_guess()
+				opponent_response = player_grid.make_guess(opp_x, opp_y)
 
-					# TODO: find a cleaner way of doing this without the response string...
-					while 'Already' in opponent_response:
-						rand_x = random.randint(0, 9)
-						rand_y = random.randint(0, 9)
-						opponent_response = player_grid.make_guess(rand_x, rand_y)
-					print 'OPPONENT GUESS: '
-					player_grid.print_grid(True)
-					print '\n'
+				# TODO: find a cleaner way of doing this without the response string...
+				while 'Already' in opponent_response:
+					(opp_x, opp_y) = opponent.next_guess()
+					opponent_response = player_grid.make_guess(opp_x, opp_y)
+				print 'OPPONENT GUESS: '
+				player_grid.print_grid(True)
+				print '\n'
 
 			except:
 				print 'Invalid input. Please try again.'
