@@ -4,13 +4,13 @@ from battleship_ai import *
 # Runs the game play
 # User can input the following commands:
 # 	Make a guess at (X,Y): g X Y
-# 	Add a ship of length L at (X,Y): s name L X Y isHorizontal
+# 	Add a ship of length L at (X,Y): s name L X Y is_horizontal
 # 	Help: h
 # 	Quit: q
 def run():
 	player_grid = Grid()
 	opponent_grid = Grid(True)
-	opponent = RandomGuesser()
+	opponent = NaiveBayesGuesser(player_grid)
 	
 	# Listen for user input
 	# Parse command and execute the appropriate actions if valid
@@ -32,8 +32,8 @@ def run():
 				length = int(user_input[2])
 				x = int(user_input[3])
 				y = int(user_input[4])
-				isHorizontal = bool(user_input[5])
-				if player_grid.add_ship(Ship(name, length, isHorizontal), x, y):
+				is_horizontal = bool(user_input[5])
+				if player_grid.add_ship(Ship(name, length, is_horizontal), x, y):
 					player_grid.print_grid(True)
 					print 'Ship added: ' + name + '\n'
 				else:
@@ -82,9 +82,9 @@ def run():
 		elif user_input[0] == 'h':
 			print 'You may enter one of the following commands:'
 			print 'q: Quit'
-			print ('s name length X Y isHorizontal: ' +
+			print ('s name length X Y is_horizontal: ' +
 				'add ship with name and length L at (X, Y) with horizontal orientation' +
-				'if isHorizontal is True. Name must be one word.')
+				'if is_horizontal is True. Name must be one word.')
 			print 'g X Y: make a guess at (X, Y)'
 
 		# Invalid input

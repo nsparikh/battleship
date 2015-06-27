@@ -2,12 +2,12 @@ import random
 
 # Represents a ship object on the board
 class Ship:
-	def __init__(self, name, length, isHorizontal):
+	def __init__(self, name, length, is_horizontal):
 		self.name = name
 		self.length = length
 
 		# True if the ship is horizontally oriented
-		self.isHorizontal = isHorizontal 
+		self.is_horizontal = is_horizontal 
 
 		# Coordinates are only set when the ship is placed successfully
 		self.x = None # Leftmost x-coordinate
@@ -80,8 +80,8 @@ class Grid:
 	# Returns True if successful, False if invalid placement
 	def add_ship(self, ship, x, y):
 		# First check to see if this is in bounds of the grid
-		if (x < 0 or (ship.isHorizontal and (x + ship.length) >= self.w)
-			or y < 0 or (not ship.isHorizontal and (y + ship.length) >= self.h)):
+		if (x < 0 or (ship.is_horizontal and (x + ship.length) >= self.w)
+			or y < 0 or (not ship.is_horizontal and (y + ship.length) >= self.h)):
 			return False
 
 		# TODO: add a check here to make sure we can add a ship
@@ -93,7 +93,7 @@ class Grid:
 		for i in range(ship.length):
 			if self.grid_array[curX][curY].ship is not None:
 				return False
-			if ship.isHorizontal: 
+			if ship.is_horizontal: 
 				curX += 1
 			else: 
 				curY += 1
@@ -103,7 +103,7 @@ class Grid:
 		ship.y = y
 		for i in range(ship.length):
 			self.grid_array[x][y].ship = ship
-			if ship.isHorizontal:
+			if ship.is_horizontal:
 				x += 1
 			else:
 				y += 1
@@ -149,7 +149,7 @@ class Grid:
 		for i in range(ship.length):
 			if not self.grid_array[curX][curY].isGuessed:
 				return False
-			if ship.isHorizontal:
+			if ship.is_horizontal:
 				curX += 1
 			else:
 				curY += 1

@@ -4,7 +4,7 @@ To run this program, run the 'main.py' python file.
 
 ### Gameplay
 This is a text-based battleship game. You may use the following commands:
-- `s name length x-coord y-coord isHorizontal`: Adds a ship with the given name and length at the given x- and y-coordinates. If isHorizontal is True, will set the orientation of the ship to be horizontal. 
+- `s name length x-coord y-coord is_horizontal`: Adds a ship with the given name and length at the given x- and y-coordinates. If is_horizontal is True, will set the orientation of the ship to be horizontal. 
 - `g x-coord y-coord`: Makes a guess on the opponent's (computer's) board at the given x- and y-coordinates.
 - `q`: Quits the game.
 - `h`: Displays the help text.
