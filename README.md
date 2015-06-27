@@ -14,7 +14,7 @@ This is a text-based battleship game. You may use the following commands:
 - You may not place ships diagonally or overlapping with other ships.
 - You may only make guesses within the bounds of the board (values 0-9).
 
-## Board Format
+#### Board Format
 The board representation is printed out as follows:
 - `X`: A 'hit' square (there is a ship occupying the space, and it has been guessed)
 - `O`: A 'miss' square (there is nothing occupying the space, but it has been guessed)

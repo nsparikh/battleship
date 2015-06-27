@@ -9,7 +9,6 @@ from battleship import *
 def run():
 	player_grid = Grid()
 	opponent_grid = Grid(True)
-	opponent_grid.print_grid(True)
 	
 	# Listen for user input
 	# Parse command and execute the appropriate actions if valid
