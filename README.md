@@ -20,4 +20,7 @@ The board representation is printed out as follows:
 - `O`: A 'miss' square (there is nothing occupying the space, but it has been guessed)
 - `_`: A unguessed square
 - `*`: An unguessed square that has a ship occupying the space. This is only displayed on your own board (e.g. you cannot see the unguessed ship locations on your opponent's board)
+
+### AI
+I've begun to implement a basic Naive Bayes Classifier; however, this is still a work in progress and currently not fully functional. 
  
