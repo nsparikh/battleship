@@ -10,7 +10,7 @@ from battleship_ai import *
 def run():
 	player_grid = Grid()
 	opponent_grid = Grid(True)
-	opponent = RandomGuesser(player_grid)
+	opponent = NaiveBayesGuesser(player_grid)
 	
 	# Listen for user input
 	# Parse command and execute the appropriate actions if valid

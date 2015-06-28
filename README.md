@@ -22,5 +22,5 @@ The board representation is printed out as follows:
 - `*`: An unguessed square that has a ship occupying the space. This is only displayed on your own board (e.g. you cannot see the unguessed ship locations on your opponent's board)
 
 ### AI
-I've begun to implement a basic Naive Bayes Classifier; however, this is still a work in progress and currently not fully functional. 
+I've begun to implement a basic Naive Bayes Classifier; however, this is still a work in progress and currently not a great guesser. I'd also like to explore using different classification algorithms or using a different set of features to train the classifier.
  

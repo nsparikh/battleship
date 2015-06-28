@@ -53,7 +53,8 @@ class NaiveBayesGuesser:
 		max_val = 0.0
 		for x in range(self.grid.w):
 			for y in range(self.grid.h):
-				if predictions[x][y][0] > max_val:
+				if (predictions[x][y][0] > max_val and not
+					self.grid.grid_array[x][y].isGuessed):
 					max_x = x
 					max_y = y
 					max_val = predictions[x][y][0]
