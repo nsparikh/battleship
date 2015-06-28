@@ -23,4 +23,5 @@ The board representation is printed out as follows:
 
 ### AI
 I've begun to implement a basic Naive Bayes Classifier; however, this is still a work in progress and currently not a great guesser. I'd also like to explore using different classification algorithms or using a different set of features to train the classifier.
- 
+
+An alternate approach I'd thought about using was to represent the player's board with a probability density function that assigns each square on the grid with a weighted value that adjusts with each subsequent move (e.g. if the computer hits a ship in a given square, this would increase the likelihood that its neighboring squares could contain a ship).
